@@ -1,3 +1,238 @@
+/* ==========================================
+   UI Redesign: Modern Minimalist Concept
+   ========================================== */
+
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* กล่องคอนเทนเนอร์หลัก */
+.converter-container {
+    background-color: #ffffff;
+    padding: 32px;
+    border-radius: 20px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    width: 400px;
+    text-align: center;
+    border: 1px solid rgba(241, 245, 249, 0.8);
+}
+
+h2 {
+    margin-top: 0;
+    color: #0f172a;
+    margin-bottom: 28px;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #475569;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* ออกแบบ Select และ Input ใหม่ทั้งหมด */
+select, input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    font-size: 16px;
+    outline: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: #ffffff;
+    color: #334155;
+    height: 50px; /* บังคับความสูงให้เท่ากันเป๊ะทุกสถานะ */
+}
+
+select:focus, input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    background-color: #ffffff;
+}
+
+/* จัดการ Layout กลุ่ม Input ให้สมดุล */
+.input-group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.input-group input {
+    flex: 2;
+}
+
+.input-group select {
+    flex: 1.5;
+    cursor: pointer;
+}
+
+/* กล่องผลลัพธ์ (ช่องแสดงตัวเลขที่แปลงแล้ว) */
+#outputValue {
+    background-color: #f8fafc;
+    border-color: #cbd5e1;
+    font-weight: 700;
+    color: #2563eb;
+    cursor: default;
+}
+
+/* ปรับแต่งปุ่มคัดลอก (Copy Button) ให้สวยงาม ไร้รอยต่อ */
+#copyBtn {
+    background-color: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    height: 50px;
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+#copyBtn:hover {
+    background-color: #e2e8f0;
+    border-color: #94a3b8;
+    transform: translateY(-1px);
+}
+
+#copyBtn:active {
+    transform: scale(0.95) translateY(0);
+}
+
+/* ปุ่มสลับหน่วย (Swap Button) */
+.icon-container {
+    margin: 16px 0;
+    display: flex;
+    justify-content: center;
+}
+
+#swapBtn {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+#swapBtn:hover {
+    background-color: #f1f5f9;
+    color: #334155;
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+#swapBtn:active {
+    transform: translateY(1px);
+    box-shadow: none;
+}
+
+/* ส่วนแสดงประวัติการคำนวณล่าสุด */
+.history-container {
+    margin-top: 28px;
+    border-top: 1px dashed #e2e8f0;
+    padding-top: 24px;
+    text-align: left;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.history-header h3 {
+    margin: 0;
+    font-size: 14px;
+    color: #475569;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+
+#clearHistoryBtn {
+    background: none;
+    border: none;
+    color: #ef4444;
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+#clearHistoryBtn:hover {
+    background-color: #fef2f2;
+    text-decoration: none;
+}
+
+#historyList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 160px;
+    overflow-y: auto;
+}
+
+#historyList li {
+    font-size: 13.5px;
+    color: #4b5563;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background-color: #f8fafc;
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #f1f5f9;
+    font-weight: 500;
+}
+
+#historyList li span {
+    width: 100%;
+}
+
+/* ซ่อน Scrollbar ของประวัติให้ดูเนียนตา (สำหรับเบราว์เซอร์ Chrome/Safari) */
+#historyList::-webkit-scrollbar {
+    width: 6px;
+}
+#historyList::-webkit-scrollbar-track {
+    background: transparent;
+}
+#historyList::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
 * {
     box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -56,6 +291,7 @@ select:focus, input:focus {
 .input-group {
     display: flex;
     gap: 10px;
+    align-items: center;
 }
 
 .input-group input {
@@ -67,10 +303,12 @@ select:focus, input:focus {
     cursor: pointer;
 }
 
-.icon {
-    font-size: 24px;
-    margin: 10px 0;
-    color: #9ca3af;
+/* กล่องครอบเพื่อให้ผลลัพธ์และปุ่มคัดลอกอยู่ในกรอบเดียวกัน */
+.result-wrapper {
+    position: relative;
+    flex: 2;
+    display: flex;
+    align-items: center;
 }
 
 #outputValue {
@@ -78,11 +316,34 @@ select:focus, input:focus {
     font-weight: bold;
     color: #2563eb;
     cursor: default;
+    padding-right: 45px; /* เว้นพื้นที่ด้านขวาในกล่องไม่ให้ตัวเลขซ้อนกับไอคอน 📋 */
+    width: 100%;
 }
 
-/* =======================================
-   เพิ่มเติมสำหรับปุ่มสลับหน่วย (Swap Button)
-   ======================================= */
+/* ดันปุ่มคัดลอกเข้าไปอยู่ด้านขวาในกล่องผลลัพธ์ */
+#copyBtn {
+    position: absolute;
+    right: 6px;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    height: 36px;
+    width: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+#copyBtn:hover {
+    background-color: #e5e7eb;
+}
+
+#copyBtn:active {
+    transform: scale(0.9);
+}
 
 .icon-container {
     margin: 15px 0;
@@ -106,7 +367,6 @@ select:focus, input:focus {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-/* เอฟเฟกต์ตอนเอาเมาส์ไปชี้ */
 #swapBtn:hover {
     background-color: #e5e7eb;
     color: #1f2937;
@@ -115,32 +375,9 @@ select:focus, input:focus {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
-/* เอฟเฟกต์ตอนคลิกปุ่ม */
 #swapBtn:active {
     transform: translateY(1px);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-#copyBtn {
-    background-color: #e5e7eb;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    padding: 0 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-}
-
-#copyBtn:hover {
-    background-color: #d1d5db;
-    transform: scale(1.05);
-}
-
-#copyBtn:active {
-    transform: scale(0.95);
 }
 
 .history-container {
