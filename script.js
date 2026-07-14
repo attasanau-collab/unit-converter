@@ -109,3 +109,15 @@ inputValue.addEventListener('input', calculate);
 
 // เริ่มต้นการทำงานครั้งแรก
 populateUnits();
+
+const swapBtn = document.getElementById('swapBtn');
+
+swapBtn.addEventListener('click', () => {
+    // สลับค่าใน Select ทั้งสองตัว
+    const temp = unitFromSelect.value;
+    unitFromSelect.value = unitToSelect.value;
+    unitToSelect.value = temp;
+    
+    // คำนวณผลลัพธ์ใหม่ทันที
+    calculate();
+});
