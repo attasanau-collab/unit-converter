@@ -120,3 +120,77 @@ select:focus, input:focus {
     transform: translateY(1px);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
+
+#copyBtn {
+    background-color: #e5e7eb;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+#copyBtn:hover {
+    background-color: #d1d5db;
+    transform: scale(1.05);
+}
+
+#copyBtn:active {
+    transform: scale(0.95);
+}
+
+.history-container {
+    margin-top: 25px;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 20px;
+    text-align: left;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.history-header h3 {
+    margin: 0;
+    font-size: 15px;
+    color: #4b5563;
+}
+
+#clearHistoryBtn {
+    background: none;
+    border: none;
+    color: #ef4444;
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+#clearHistoryBtn:hover {
+    text-decoration: underline;
+}
+
+#historyList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+#historyList li {
+    font-size: 13px;
+    color: #6b7280;
+    padding: 6px 8px;
+    border-radius: 6px;
+    background-color: #f9fafb;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+}

@@ -50,12 +50,18 @@ function populateUnits() {
         unitToSelect.selectedIndex = 1;
     }
     
-    calculate();
+    calculate(false); // เริ่มต้นหน้าเว็บใหม่ยังไม่ต้องบันทึกประวัติ
 }
 
 // ฟังก์ชันคำนวณการแปลงหน่วย
-function calculate() {
+function calculate(saveHistory = false) {
     const category = categorySelect.value;
+
+    // ดักจับไม่ให้กรอกค่าติดลบ สำหรับความยาวและน้ำหนัก
+    if (category !== 'temperature' && parseFloat(inputValue.value) < 0) {
+        inputValue.value = 0;
+    }
+
     const from = unitFromSelect.value;
     const to = unitToSelect.value;
     const value = parseFloat(inputValue.value);
@@ -75,49 +81,129 @@ function calculate() {
         const factorFrom = units[category][from].factor;
         const factorTo = units[category][to].factor;
         
-        // แปลงเป็นหน่วยฐาน (Base unit) ก่อน แล้วหารด้วยอัตราส่วนหน่วยปลายทาง
         const valueInBase = value * factorFrom;
         result = valueInBase / factorTo;
     }
 
-    // จัดการจุดทศนิยม ไม่ให้ยาวเกินไป (ตัดศูนย์ที่อยู่ท้ายสุดออก)
-    outputValue.value = Number.isInteger(result) ? result : parseFloat(result.toFixed(6));
+    // จัดการจุดทศนิยม
+    const finalResult = Number.isInteger(result) ? result : parseFloat(result.toFixed(6));
+    outputValue.value = finalResult;
+
+    // บันทึกประวัติเฉพาะเมื่อตั้งค่าให้เซฟเท่านั้น
+    if (saveHistory) {
+        saveToHistory(value, from, finalResult, to);
+    }
 }
 
-// ฟังก์ชันคำนวณอุณหภูมิ (เนื่องจากใช้การบวก/ลบ ไม่ใช่แค่การคูณ)
+// ฟังก์ชันคำนวณอุณหภูมิ
 function convertTemperature(value, from, to) {
     if (from === to) return value;
     
     let celsius;
     
-    // แปลงทุกอย่างให้เป็นเซลเซียสก่อน
     if (from === 'celsius') celsius = value;
     else if (from === 'fahrenheit') celsius = (value - 32) * 5/9;
     else if (from === 'kelvin') celsius = value - 273.15;
 
-    // แปลงจากเซลเซียสไปยังหน่วยปลายทาง
     if (to === 'celsius') return celsius;
     else if (to === 'fahrenheit') return (celsius * 9/5) + 32;
     else if (to === 'kelvin') return celsius + 273.15;
 }
 
-// ตั้งค่า Event Listeners เพื่อให้ระบบคำนวณอัตโนมัติเมื่อมีการเปลี่ยนแปลงค่า
-categorySelect.addEventListener('change', populateUnits);
-unitFromSelect.addEventListener('change', calculate);
-unitToSelect.addEventListener('change', calculate);
-inputValue.addEventListener('input', calculate);
-
-// เริ่มต้นการทำงานครั้งแรก
-populateUnits();
-
-const swapBtn = document.getElementById('swapBtn');
-
-swapBtn.addEventListener('click', () => {
-    // สลับค่าใน Select ทั้งสองตัว
-    const temp = unitFromSelect.value;
-    unitFromSelect.value = unitToSelect.value;
-    unitToSelect.value = temp;
+// ฟังก์ชันบันทึกประวัติ
+function saveToHistory(valIn, unitIn, valOut, unitOut) {
+    if (valIn === undefined || isNaN(valIn)) return;
     
-    // คำนวณผลลัพธ์ใหม่ทันที
-    calculate();
+    let history = JSON.parse(localStorage.getItem('unit_converter_history')) || [];
+    const textIn = units[categorySelect.value][unitIn].name;
+    const textTo = units[categorySelect.value][unitOut].name;
+    const record = `${valIn} ${textIn} ➡️ ${valOut} ${textTo}`;
+
+    if (history[0] === record) return;
+
+    history.unshift(record);
+    if (history.length > 5) history.pop();
+
+    localStorage.setItem('unit_converter_history', JSON.stringify(history));
+    renderHistory();
+}
+
+// ฟังก์ชันเรนเดอร์รายการประวัติบนหน้าเว็บ
+function renderHistory() {
+    const historyList = document.getElementById('historyList');
+    if (!historyList) return;
+    
+    const history = JSON.parse(localStorage.getItem('unit_converter_history')) || [];
+    
+    historyList.innerHTML = history.length === 0 
+        ? '<li style="background:none; justify-content:center;">ไม่มีประวัติการคำนวณ</li>' 
+        : history.map(item => `<li><span>${item}</span></li>`).join('');
+}
+
+/* ========================================================
+   แก้ไขส่วนตั้งค่า Event Listeners ให้ถูกต้องและทำงานร่วมกันได้ดี
+   ======================================================== */
+
+// 1. เปลี่ยนหมวดหมู่ ให้ล้างหน่วยและคำนวณใหม่ทันที
+categorySelect.addEventListener('change', populateUnits);
+
+// 2. เปลี่ยนหน่วยต้นทาง-ปลายทาง ให้คำนวณและบันทึกประวัติทันที
+unitFromSelect.addEventListener('change', () => calculate(true));
+unitToSelect.addEventListener('change', () => calculate(true));
+
+// 3. ตอนพิมพ์: คำนวณผลลัพธ์แบบเรียลไทม์ (แต่ยังไม่บันทึกประวัติเพื่อไม่ให้รก)
+inputValue.addEventListener('input', () => calculate(false));
+
+// 4. ตอนกด Enter: บันทึกประวัติทันที!
+inputValue.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        calculate(true);
+    }
 });
+
+// 5. ตอนคลิกเมาส์ออกนอกกล่อง (Blur): บันทึกประวัติทันที!
+inputValue.addEventListener('blur', () => calculate(true));
+
+// ระบบปุ่มสลับหน่วย (Swap)
+const swapBtn = document.getElementById('swapBtn');
+if (swapBtn) {
+    swapBtn.addEventListener('click', () => {
+        const temp = unitFromSelect.value;
+        unitFromSelect.value = unitToSelect.value;
+        unitToSelect.value = temp;
+        calculate(true); // สลับหน่วยแล้ว บันทึกประวัติทันที
+    });
+}
+
+// ระบบปุ่มคัดลอก (Copy)
+const copyBtn = document.getElementById('copyBtn');
+if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+        if (!outputValue.value) return;
+        
+        navigator.clipboard.writeText(outputValue.value).then(() => {
+            copyBtn.innerText = '✅';
+            copyBtn.style.backgroundColor = '#dcfce7';
+            
+            setTimeout(() => {
+                copyBtn.innerText = '📋';
+                copyBtn.style.backgroundColor = '';
+            }, 1200);
+        }).catch(err => {
+            console.error('ไม่สามารถคัดลอกได้:', err);
+        });
+    });
+}
+
+// ล้างประวัติการคำนวณ
+const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+if (clearHistoryBtn) {
+    clearHistoryBtn.addEventListener('click', () => {
+        localStorage.removeItem('unit_converter_history');
+        renderHistory();
+    });
+}
+
+// เริ่มต้นการทำงานครั้งแรกเมื่อเปิดหน้าเว็บ
+populateUnits();
+renderHistory();

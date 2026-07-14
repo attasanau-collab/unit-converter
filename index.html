@@ -30,7 +30,16 @@
 
         <div class="input-group">
             <input type="text" id="outputValue" readonly placeholder="ผลลัพธ์">
+            <button id="copyBtn" type="button" title="คัดลอกผลลัพธ์">📋</button>
             <select id="unitTo"></select>
+        </div>
+
+        <div class="history-container">
+            <div class="history-header">
+                <h3>ประวัติการแปลงล่าสุด</h3>
+                <button id="clearHistoryBtn">ล้างประวัติ</button>
+            </div>
+            <ul id="historyList"></ul>
         </div>
     </div>
 
