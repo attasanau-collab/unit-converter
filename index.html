@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เครื่องมือแปลงหน่วย - Unit Converter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="converter-container">
+        <h2>เครื่องมือแปลงหน่วย</h2>
+        
+        <div class="form-group">
+            <label for="category">หมวดหมู่:</label>
+            <select id="category">
+                <option value="length">📏 ความยาว</option>
+                <option value="weight">⚖️ น้ำหนัก</option>
+                <option value="temperature">🌡️ อุณหภูมิ</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <input type="number" id="inputValue" placeholder="กรอกตัวเลข..." value="1">
+            <select id="unitFrom"></select>
+        </div>
+
+        <div class="icon">⬇️</div>
+
+        <div class="input-group">
+            <input type="text" id="outputValue" readonly placeholder="ผลลัพธ์">
+            <select id="unitTo"></select>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
