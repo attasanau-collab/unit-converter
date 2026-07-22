@@ -21,6 +21,16 @@ const units = {
         celsius: { name: 'เซลเซียส (°C)' },
         fahrenheit: { name: 'ฟาเรนไฮต์ (°F)' },
         kelvin: { name: 'เคลวิน (K)' }
+    },
+
+    data: {
+        bit: { name: 'บิต (Bit)', factor: 0.125 },
+        byte: { name: 'ไบต์ (B)', factor: 1 },
+        kilobyte: { name: 'กิโลไบต์ (KB)', factor: 1024 },
+        megabyte: { name: 'เมกะไบต์ (MB)', factor: 1048576 },
+        gigabyte: { name: 'กิกะไบต์ (GB)', factor: 1073741824 },
+        terabyte: { name: 'เทราไบต์ (TB)', factor: 1099511627776 },
+        petabyte: { name: 'เพตาไบต์ (PB)', factor: 1125899906842624 }
     }
 };
 
@@ -86,7 +96,16 @@ function calculate(saveHistory = false) {
     }
 
     // จัดการจุดทศนิยม
-    const finalResult = Number.isInteger(result) ? result : parseFloat(result.toFixed(6));
+    // จัดการจุดทศนิยมอย่างเหมาะสม
+    let finalResult;
+    if (Number.isInteger(result)) {
+        finalResult = result;
+    } else if (Math.abs(result) < 0.000001 && result !== 0) {
+        finalResult = parseFloat(result.toPrecision(6)); // ช่วยเก็บความแม่นยำเวลาแปลงจาก B ไป TB/PB
+    } else {
+        finalResult = parseFloat(result.toFixed(6));
+    }
+
     outputValue.value = finalResult;
 
     // บันทึกประวัติเฉพาะเมื่อตั้งค่าให้เซฟเท่านั้น
