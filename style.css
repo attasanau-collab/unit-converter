@@ -431,3 +431,25 @@ select:focus, input:focus {
     display: flex;
     justify-content: space-between;
 }
+
+/* ==========================================
+   ส่วนตกแต่ง Footer (ข้อมูลผู้จัดทำและรายวิชา)
+   ========================================== */
+.app-footer {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #e2e8f0;
+    font-size: 13px;
+    color: #64748b;
+    text-align: center;
+}
+
+.app-footer p {
+    margin: 4px 0;
+    line-height: 1.4;
+}
+
+.app-footer span {
+    font-weight: 600;
+    color: #334155;
+}
