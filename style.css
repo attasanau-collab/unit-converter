@@ -433,37 +433,25 @@ select:focus, input:focus {
 }
 
 /* ==========================================
-   Footer Style 1: Soft Card
+   ส่วนตกแต่ง Footer (ข้อมูลผู้จัดทำและรายวิชา)
    ========================================== */
 .app-footer {
-    margin-top: 24px;
-    padding: 14px 16px;
+    margin-top: 20px;
+    padding: 12px 16px;
     background-color: #f8fafc;
     border: 1px solid #e2e8f0;
     border-radius: 12px;
     font-size: 13px;
     color: #64748b;
     text-align: center;
-    transition: all 0.25s ease;
-}
-
-.app-footer:hover {
-    background-color: #f1f5f9;
-    border-color: #cbd5e1;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
 .app-footer p {
     margin: 4px 0;
-    line-height: 1.5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
+    line-height: 1.4;
 }
 
 .app-footer span {
     font-weight: 600;
-    color: #1e293b;
+    color: #0f172a;
 }
